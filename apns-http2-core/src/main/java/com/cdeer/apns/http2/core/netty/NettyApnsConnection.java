@@ -79,8 +79,7 @@ public class NettyApnsConnection {
         if (connectionPool.isShutdown()) {
             return;
         }
-
-        log.info("send payload " + notification.getPayload().toString() + " token " + notification.getToken());
+//        log.info("send payload " + notification.getPayload().toString() + " token " + notification.getToken());
         int retryCount = 0;
         int streamId = -1;
         boolean success = false;
@@ -108,8 +107,8 @@ public class NettyApnsConnection {
                 if (this.streamId.get() > 200000000) {
                     this.streamId.set(INITIAL_STREAM_ID);
                 }
-                streamId = this.streamId.getAndAdd(1);
-                log.info("发送通知,[streamId:" + streamId + "][token:" + notification.getToken() + "]");
+                streamId = this.streamId.getAndAdd(2);
+//                log.info("发送通知,[streamId:" + streamId + "][token:" + notification.getToken() + "]");
 
                 responseHandler.put(streamId, notification, channel.writeAndFlush(request), channel.newPromise());
             }
@@ -117,7 +116,7 @@ public class NettyApnsConnection {
             Map<Integer, Integer> responses = responseHandler.awaitResponses(timeout, TimeUnit.MILLISECONDS);
             int code = responses.get(streamId);
             if (code == CODE_SUCCESS) {
-                log.info("send success token " + notification.getToken());
+//                log.info("send success token " + notification.getToken());
                 responseHandler.removeNotification(streamId);
                 success = true;
                 break;
@@ -137,8 +136,7 @@ public class NettyApnsConnection {
         }
 
         if (!success) {
-            log.error("send failed token " + notification.getToken()+", size:"+http2ClientInitializer.responseHandler().notificationMap.size());
-
+            log.error("send failed token " + notification.getToken() + ", size:" + http2ClientInitializer.responseHandler().notificationMap.size());
         }
     }
 

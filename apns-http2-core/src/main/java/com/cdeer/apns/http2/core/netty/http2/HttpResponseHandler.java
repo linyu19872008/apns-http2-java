@@ -83,12 +83,12 @@ public class HttpResponseHandler extends SimpleChannelInboundHandler<FullHttpRes
 //            return;
 //        }
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(tag).append(" ").append("streamIdMap: ");
-        for (Integer streamId : streamIdPromiseMap.keySet()) {
-            builder.append(streamId).append(" ");
-        }
-        log.info(builder.toString());
+//        StringBuilder builder = new StringBuilder();
+//        builder.append(tag).append(" ").append("streamIdMap: ");
+//        for (Integer streamId : streamIdPromiseMap.keySet()) {
+//            builder.append(streamId).append(" ");
+//        }
+//        log.info(builder.toString());
     }
 
     /**
@@ -134,7 +134,7 @@ public class HttpResponseHandler extends SimpleChannelInboundHandler<FullHttpRes
 
             responses.put(entry.getKey(), 0);
 
-            log.info("stream id: " + entry.getKey() + " received");
+//            log.info("stream id: " + entry.getKey() + " received");
             itr.remove();
         }
         return responses;
@@ -144,6 +144,11 @@ public class HttpResponseHandler extends SimpleChannelInboundHandler<FullHttpRes
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpResponse msg) throws Exception {
         dumpStreamIdPromiseMap("channelRead0");
         Integer streamId = msg.headers().getInt(HttpConversionUtil.ExtensionHeaderNames.STREAM_ID.text());
+
+        PushNotification notification = notificationMap.remove(streamId);
+
+        log.info("response[" + msg.status().code() + "],[streamId:" + streamId + "][token:" + notification + "]");
+
         if (streamId == null) {
             log.error("HttpResponseHandler unexpected message received: " + msg);
             return;
@@ -160,11 +165,11 @@ public class HttpResponseHandler extends SimpleChannelInboundHandler<FullHttpRes
                 byte[] arr = new byte[contentLength];
                 content.readBytes(arr);
                 String result = new String(arr, 0, contentLength, CharsetUtil.UTF_8);
-                PushNotification notification = notificationMap.remove(streamId);
-                log.info("response[" + msg.status().code() + "],[streamId:" + streamId + "][token:" + notification.getToken() + "]:" + result);
-                if (msg.status().code() != 200) {
-                    ctx.channel().close();
-                }
+//                PushNotification notification = notificationMap.remove(streamId);
+//                log.info("response[" + msg.status().code() + "],[streamId:" + streamId + "][token:" + notification.getToken() + "]:" + result);
+//                if (msg.status().code() != 200) {
+//                    ctx.channel().close();
+//                }
             }
 
             entry.getValue().setSuccess();
