@@ -21,8 +21,6 @@ public class ApnsClient {
 
     private static final String TOKEN = "3e1fe6153769a7abc922d1cb80e676ec835d01c5bd316ab1e7493321aafde111";
 
-    public static ApnsService apnsService;
-
     public static void main(String[] args) {
         // 读取证书
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("zhengshu.p12");
@@ -35,26 +33,28 @@ public class ApnsClient {
         config.setPoolSize(1);// 线程池大小
         config.setTimeout(3000);// TCP连接超时时间
         config.setTopic("com.push");// 标题,即证书的bundleID
-        apnsService = ApnsServiceManager.createService(config);
+        ApnsServiceManager.createService(config);
 
 
         ErrorDispatcher.getInstance().addListener(new ErrorListener() {
             @Override
             public void handle(ErrorModel errorModel) {
-                log.info("收到监听:" + errorModel);
+                log.info("收到错误监听:" + errorModel);
 
             }
         });
 
-        sendNotification(TOKEN);
+        sendNotification(config.getName(), TOKEN);
 
     }
 
-    public static void sendNotification(String token) {
+    public static void sendNotification(String appName, String token) {
 
         Payload payload = new Payload();
         payload.setAlert("test");
-        apnsService.sendNotification(token, payload);
+
+        ApnsService service = ApnsServiceManager.getService(appName);
+        service.sendNotification(token, payload);
     }
 
 }
