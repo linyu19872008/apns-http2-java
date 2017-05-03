@@ -38,7 +38,9 @@ public class NettyApnsConnectionPool {
         String host = config.isDevEnv() ? HOST_DEVELOPMENT : HOST_PRODUCTION;
         KeyManagerFactory keyManagerFactory = createKeyManagerFactory(config);
         for (int i = 0; i < poolSize; i++) {
-            NettyApnsConnection connection = new NettyApnsConnection("conn-" + i, host, PORT,
+//            NettyApnsConnection connection = new NettyApnsConnection("conn-" + i, host, PORT,
+//                    config.getRetries(), config.getTimeout(), config.getTopic(), keyManagerFactory);
+            NettyApnsConnection connection = new NettyApnsConnection(config.getName(), host, PORT,
                     config.getRetries(), config.getTimeout(), config.getTopic(), keyManagerFactory);
             connection.setConnectionPool(this);
             connectionQueue.add(connection);

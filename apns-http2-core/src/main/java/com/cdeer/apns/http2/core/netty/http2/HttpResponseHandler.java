@@ -1,5 +1,7 @@
 package com.cdeer.apns.http2.core.netty.http2;
 
+import com.cdeer.apns.http2.core.error.ErrorDispatcher;
+import com.cdeer.apns.http2.core.error.ErrorModel;
 import com.cdeer.apns.http2.core.model.PushNotification;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
@@ -145,9 +147,16 @@ public class HttpResponseHandler extends SimpleChannelInboundHandler<FullHttpRes
         dumpStreamIdPromiseMap("channelRead0");
         Integer streamId = msg.headers().getInt(HttpConversionUtil.ExtensionHeaderNames.STREAM_ID.text());
 
+        int code = msg.status().code();
         PushNotification notification = notificationMap.remove(streamId);
-
-        log.info("response[" + msg.status().code() + "],[streamId:" + streamId + "][token:" + notification + "]");
+        if (code != 200) {
+            log.info("response[" + code + "],[streamId:" + streamId + "][token:" + notification + "]");
+            ErrorModel errorModel = new ErrorModel();
+            errorModel.setAppName(name);
+            errorModel.setCode(code);
+            errorModel.setNotification(notification);
+            ErrorDispatcher.getInstance().dispatch(errorModel);
+        }
 
         if (streamId == null) {
             log.error("HttpResponseHandler unexpected message received: " + msg);
@@ -174,5 +183,11 @@ public class HttpResponseHandler extends SimpleChannelInboundHandler<FullHttpRes
 
             entry.getValue().setSuccess();
         }
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        log.error("TCP连接断开" + ctx.channel());
+        super.channelInactive(ctx);
     }
 }

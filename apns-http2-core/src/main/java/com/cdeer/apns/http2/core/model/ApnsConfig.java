@@ -88,7 +88,8 @@ public class ApnsConfig {
     }
 
     public String getName() {
-        return this.name != null && !"".equals(this.name.trim()) ? this.name : (this.isDevEnv() ? "dev-env" : "product-env");
+//        return this.name != null && !"".equals(this.name.trim()) ? this.name : (this.isDevEnv() ? "dev-env" : "product-env");
+        return name;
     }
 
     public void setName(String name) {
