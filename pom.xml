@@ -6,8 +6,10 @@
 
     <groupId>com.cdeer</groupId>
     <artifactId>apns-http2-java</artifactId>
+    <version>1.0</version>
+
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+
     <modules>
         <module>apns-http2-core</module>
         <module>apns-http2-example</module>
