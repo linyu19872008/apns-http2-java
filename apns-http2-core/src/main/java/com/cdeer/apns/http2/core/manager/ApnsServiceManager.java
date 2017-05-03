@@ -77,6 +77,9 @@ public class ApnsServiceManager {
         if (config.getName() == null || "".equals(config.getName().trim())) {
             throw new IllegalArgumentException("服务名为必填项,请检查");
         }
+        if (config.getTopic() == null || "".equals(config.getTopic().trim())) {
+            throw new IllegalArgumentException("标题,即证书的bundleID不能为空,请检查");
+        }
     }
 
 }
