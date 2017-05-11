@@ -29,8 +29,10 @@ public class ApnsServiceManager {
         ApnsService apnsService = serviceMap.get(name);
         if (apnsService == null) {
             synchronized (name.intern()) {
-                apnsService = NettyApnsService.create(config);
-                serviceMap.put(name, apnsService);
+                if (apnsService == null) {
+                    apnsService = NettyApnsService.create(config);
+                    serviceMap.put(name, apnsService);
+                }
             }
         }
         return apnsService;
