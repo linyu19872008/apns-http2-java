@@ -7,6 +7,7 @@ import com.cdeer.apns.http2.core.error.ErrorModel;
 import com.cdeer.apns.http2.core.manager.ApnsServiceManager;
 import com.cdeer.apns.http2.core.model.ApnsConfig;
 import com.cdeer.apns.http2.core.model.Payload;
+import com.cdeer.apns.http2.core.model.PushNotification;
 import com.cdeer.apns.http2.core.netty.http2.HttpResponseHandler;
 import com.cdeer.apns.http2.core.service.ApnsService;
 import com.cdeer.apns.http2.core.service.NettyApnsService;
@@ -53,8 +54,13 @@ public class ApnsClient {
         Payload payload = new Payload();
         payload.setAlert("test");
 
+        PushNotification notification = new PushNotification();
+        notification.setPayload(payload);
+        notification.setToken(token);
+
         ApnsService service = ApnsServiceManager.getService(appName);
-        service.sendNotification(token, payload);
+        service.sendNotification(notification);// 异步发送
+//        boolean result = service.sendNotificationSynch(notification);// 同步发送
     }
 
 }

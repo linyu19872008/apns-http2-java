@@ -27,19 +27,7 @@ public abstract class AbstractApnsService implements ApnsService {
     protected ExecutorService executorService;
 
     public AbstractApnsService(ApnsConfig config) {
-//        executorService = Executors.newFixedThreadPool(config.getPoolSize());
         executorService = Executors.newFixedThreadPool(config.getPoolSize(), new NamedThreadFactory(config.getName()));
-    }
-
-    @SuppressWarnings("Duplicates")
-    @Override
-    public void sendNotification(String token, Payload payload) {
-        PushNotification notification = new PushNotification();
-        notification.setToken(token);
-        notification.setPayload(payload);
-        notification.setExpire(EXPIRE);
-        notification.setId(IDS.incrementAndGet());
-        sendNotification(notification);
     }
 
     @Override
