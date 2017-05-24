@@ -150,7 +150,7 @@ public class HttpResponseHandler extends SimpleChannelInboundHandler<FullHttpRes
         int code = msg.status().code();
         PushNotification notification = notificationMap.remove(streamId);
         if (code != 200) {
-            log.info("response[" + code + "],[streamId:" + streamId + "][token:" + notification + "]");
+            log.debug("response[" + code + "],[streamId:" + streamId + "][token:" + notification + "]");
             ErrorModel errorModel = new ErrorModel();
             errorModel.setAppName(name);
             errorModel.setCode(code);

@@ -15,7 +15,6 @@
         <module>apns-http2-example</module>
     </modules>
 
-
     <build>
         <plugins>
             <plugin>
