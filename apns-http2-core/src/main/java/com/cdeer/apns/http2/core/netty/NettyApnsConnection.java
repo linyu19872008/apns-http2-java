@@ -159,7 +159,7 @@ public class NettyApnsConnection {
                 return false;
             }
         }
-        log.info("send payload " + notification.getPayload().toString() + " token " + notification.getToken());
+//        log.info("send payload " + notification.getPayload().toString() + " token " + notification.getToken());
 
         FullHttpRequest request = null;
         HttpResponseHandler responseHandler = http2ClientInitializer.responseHandler();

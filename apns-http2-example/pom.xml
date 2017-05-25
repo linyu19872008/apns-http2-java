@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.cdeer</groupId>
             <artifactId>apns-http2-core</artifactId>
-            <version>1.2</version>
+            <version>1.3</version>
         </dependency>
     </dependencies>
 
