@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.cdeer.apns.http2.core.netty.http2.HttpResponseHandler.*;
-
 /**
  * 使用Netty建立的TCP连接
  */
@@ -195,6 +193,7 @@ public class NettyApnsConnection {
         return false;
 
     }
+
 
 
     private void initializeNettyClient() throws Exception {
